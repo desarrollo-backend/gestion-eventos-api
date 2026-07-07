@@ -1,0 +1,25 @@
+{
+  "name": "gestion-eventos-api",
+  "version": "1.0.0",
+  "description": "Proyecto API REST para caso de estudio de Gestion de Eventos",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/desarrollo-backend/gestion-eventos-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/desarrollo-backend/gestion-eventos-api/issues"
+  },
+  "homepage": "https://github.com/desarrollo-backend/gestion-eventos-api#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
