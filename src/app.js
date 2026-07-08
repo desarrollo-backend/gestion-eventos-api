@@ -1,4 +1,5 @@
 import express from "express"
+import eventosRoutes from "./routes/eventos.routes.js";
 
 const app = express();
 const PORT = 3000;
@@ -24,6 +25,8 @@ app.get('/', (req, res) => {
         version: '1.0'
     });
 });    
+
+app.use("/eventos", eventosRoutes);
 
 app.get('/eventos', (req, res) => {
     res.json(eventos);
