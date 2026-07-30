@@ -22,6 +22,14 @@ app.get('/', (req, res) => {
 
 app.use("/eventos", eventosRoutes);
 
+// Ruta no encontrada
+app.use((req, res, next) => {
+    const error = new Error("Ruta no encontrada.");
+    error.status = 404;
+
+    next(error);
+});
+
 // Middleware para manejo de errores
 app.use((err, req, res, next) => {
     console.error("Error capturado por el middleware:");

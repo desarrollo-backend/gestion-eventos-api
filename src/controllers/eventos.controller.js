@@ -42,7 +42,17 @@ export const obtenerEventoPorId = (req, res, next) => {
     res.json(evento);
 }
 
-export const crearEvento = (req, res) => {
+export const crearEvento = (req, res, next) => {
+    if (!req.body.nombre || !req.body.lugar) {
+        const error = new Error(
+            "Los campos 'nombre' y 'lugar' son obligatorios."
+        );
+
+        error.status = 400;
+
+        return next(error);
+    }
+
     const nuevoEvento = {
         id: eventos.length + 1,
         nombre: req.body.nombre,
@@ -64,6 +74,16 @@ export const actualizarEvento = (req, res, next) => {
     if (!evento) {
         const error = new Error("El evento no existe.");
         error.status = 404;
+
+        return next(error);
+    }
+
+    if (!req.body.nombre || !req.body.lugar) {
+        const error = new Error(
+            "Los campos 'nombre' y 'lugar' son obligatorios."
+        );
+
+        error.status = 400;
 
         return next(error);
     }
