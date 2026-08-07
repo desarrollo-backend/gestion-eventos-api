@@ -1,3 +1,5 @@
+import prisma from "../config/prisma.js";
+
 const eventos = [
     {
         id: 1,
@@ -11,9 +13,17 @@ const eventos = [
     }
 ];
 
-export const obtenerEventos = (req, res) => {
-    res.json(eventos);
-};
+export const obtenerEventos =
+    async (req, res, next) => {
+        try {
+            const eventosPersistidos =
+                await prisma.evento.findMany();
+
+            return res.json(eventosPersistidos);
+        } catch (error) {
+            return next(error);
+        }
+    };
 
 export const obtenerEventosFiltrados = (req, res) => {
     const lugar = req.query.lugar;

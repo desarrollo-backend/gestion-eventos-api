@@ -124,6 +124,7 @@ dist
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
+.vscode
 
 # pnpm
 .pnpm-store
@@ -142,4 +143,14 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
 
+# Configuración local de asistentes de IA
+.agents/
+.claude/
+.windsurf/
+
+# Archivos temporales
+.tmp/
+.codex-tmp/
+
 docs/
+/src/generated/prisma
