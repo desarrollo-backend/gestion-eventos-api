@@ -143,7 +143,13 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
 
-# Archivos temporales de Codex
+# Configuración local de asistentes de IA
+.agents/
+.claude/
+.windsurf/
+
+# Archivos temporales
+.tmp/
 .codex-tmp/
 
 docs/
