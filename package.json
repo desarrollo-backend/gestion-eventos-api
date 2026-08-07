@@ -5,8 +5,8 @@
   "main": "src/app.js",
   "type": "module",
   "scripts": {
-    "start": "node src/app.js",
-    "dev": "node --watch src/app.js"
+    "start": "node --experimental-strip-types src/app.js",
+    "dev": "node --experimental-strip-types --watch src/app.js"
   },
   "repository": {
     "type": "git",
