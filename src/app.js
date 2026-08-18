@@ -7,7 +7,7 @@ const PORT = 3000;
 // Middleware incorporado por Express
 app.use(express.json());
 
-// Nuestro primer middleware
+// Middleware de registro básico de solicitudes
 app.use((req, res, next) => {
     console.log(`Datos de la solicitud: ${req.method} ${req.url}`);
     next();

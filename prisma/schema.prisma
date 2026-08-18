@@ -12,12 +12,59 @@ datasource db {
   provider = "postgresql"
 }
 
+model Categoria {
+  id      Int      @id @default(autoincrement())
+  nombre  String
+  eventos Evento[]
+}
+
 model Evento {
-  id          Int      @id @default(autoincrement())
-  nombre      String
-  descripcion String?
-  lugar       String
-  fecha       DateTime
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id                         Int                  @id @default(autoincrement())
+  nombre                     String
+  descripcion                String?
+  lugar                      String
+  fecha                      DateTime
+  createdAt                  DateTime             @default(now())
+  updatedAt                  DateTime             @updatedAt
+  categoriaId                Int
+  categoria                  Categoria            @relation(fields: [categoriaId], references: [id], onDelete: Restrict)
+  configuracion              ConfiguracionEvento?
+  institucionesOrganizadoras Institucion[]
+  inscripciones              Inscripcion[]
+}
+
+model ConfiguracionEvento {
+  id                  Int     @id @default(autoincrement())
+  modalidad           String
+  requiereInscripcion Boolean @default(true)
+
+  eventoId Int    @unique
+  evento   Evento @relation(fields: [eventoId], references: [id], onDelete: Cascade)
+}
+
+model Institucion {
+  id                 Int      @id @default(autoincrement())
+  nombre             String
+  eventosOrganizados Evento[]
+}
+
+model Participante {
+  id            Int           @id @default(autoincrement())
+  nombre        String
+  email         String
+  inscripciones Inscripcion[]
+}
+
+model Inscripcion {
+  id     Int      @id @default(autoincrement())
+  fecha  DateTime @default(now())
+  estado String
+
+  eventoId       Int
+  participanteId Int
+
+  evento       Evento       @relation(fields: [eventoId], references: [id], onDelete: Cascade)
+  participante Participante @relation(fields: [participanteId], references: [id], onDelete: Cascade)
+
+  @@unique([eventoId, participanteId])
 }
