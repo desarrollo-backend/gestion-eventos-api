@@ -1,6 +1,9 @@
 {
   "name": "gestion-eventos-api",
   "version": "1.0.0",
+  "engines": {
+    "node": "24.x"
+  },
   "description": "Proyecto API REST para caso de estudio de Gestion de Eventos",
   "main": "src/app.js",
   "type": "module",
@@ -29,5 +32,9 @@
   },
   "devDependencies": {
     "prisma": "^7.9.1"
+  },
+  "allowScripts": {
+    "@prisma/engines@7.9.1": true,
+    "prisma@7.9.1": true
   }
 }
