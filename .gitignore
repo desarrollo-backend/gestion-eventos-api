@@ -154,3 +154,7 @@ vite.config.ts.timestamp-*
 
 docs/
 /src/generated/prisma
+
+# Archivos temporales 
+/.tmp-clase5-montage.png
+/.tmp-clase5-review/
