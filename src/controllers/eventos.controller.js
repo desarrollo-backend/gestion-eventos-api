@@ -26,7 +26,15 @@ export const obtenerEventosFiltrados = async (req, res, next) => {
 
 export const obtenerEventoPorId = async (req, res, next) => {
     try {
-        const idEvento = req.params.id;
+        const idEvento = Number(req.params.id);
+
+        if (!Number.isInteger(idEvento) || idEvento <= 0) {
+            const error = new Error(
+                "El identificador del evento debe ser un entero positivo."
+            );
+            error.status = 400;
+            return next(error);
+        }
 
         const evento = await prisma.evento.findUnique({
             where: { id: idEvento },
@@ -57,9 +65,35 @@ export const crearEvento = async (req, res, next) => {
             categoriaId
         } = req.body;
 
+        if (
+            !nombre ||
+            !lugar ||
+            !fecha ||
+            !Number.isInteger(categoriaId) ||
+            categoriaId <= 0
+        ) {
+            const error = new Error(
+                "Nombre, lugar y fecha son obligatorios; " +
+                "categoriaId debe ser un entero positivo."
+            );
+
+            error.status = 400;
+            return next(error);
+        }
+
+        const fechaEvento = new Date(fecha);
+
+        if (Number.isNaN(fechaEvento.getTime())) {
+            const error = new Error(
+                "La fecha del evento no es válida."
+            );
+
+            error.status = 400;
+            return next(error);
+        }
+
         const categoria = await prisma.categoria.findUnique({
-            where: { id: categoriaId },
-            select: { id: true }
+            where: { id: categoriaId }
         });
 
         if (!categoria) {
@@ -71,15 +105,19 @@ export const crearEvento = async (req, res, next) => {
 
         const nuevoEvento = await prisma.evento.create({
             data: {
-                nombre,
-                descripcion,
-                lugar,
-                fecha,
+                nombre: nombre.trim(),
+                descripcion: descripcion?.trim() || null,
+                lugar: lugar.trim(),
+                fecha: fechaEvento,
                 categoria: {
                     connect: { id: categoriaId }
                 }
+            },
+            include: {
+                categoria: true
             }
         });
+
         return res.status(201).json(nuevoEvento);
     } catch (error) {
         return next(error);
@@ -88,7 +126,17 @@ export const crearEvento = async (req, res, next) => {
 
 export const actualizarEvento = async (req, res, next) => {
     try {
-        const idEvento = req.params.id;
+        const idEvento = Number(req.params.id);
+
+        if (!Number.isInteger(idEvento) || idEvento <= 0) {
+            const error = new Error(
+                "El identificador debe ser un entero positivo."
+            );
+
+            error.status = 400;
+            return next(error);
+        }
+
         const {
             nombre,
             descripcion,
@@ -97,9 +145,34 @@ export const actualizarEvento = async (req, res, next) => {
             categoriaId
         } = req.body;
 
+        if (
+            !nombre ||
+            !lugar ||
+            !fecha ||
+            !Number.isInteger(categoriaId) ||
+            categoriaId <= 0
+        ) {
+            const error = new Error(
+                "Los datos del evento son inválidos."
+            );
+
+            error.status = 400;
+            return next(error);
+        }
+
+        const fechaEvento = new Date(fecha);
+
+        if (Number.isNaN(fechaEvento.getTime())) {
+            const error = new Error(
+                "La fecha del evento no es válida."
+            );
+
+            error.status = 400;
+            return next(error);
+        }
+
         const categoria = await prisma.categoria.findUnique({
-            where: { id: categoriaId },
-            select: { id: true }
+            where: { id: categoriaId }
         });
 
         if (!categoria) {
@@ -113,10 +186,10 @@ export const actualizarEvento = async (req, res, next) => {
                 id: idEvento
             },
             data: {
-                nombre,
-                descripcion,
-                lugar,
-                fecha,
+                nombre: nombre.trim(),
+                descripcion: descripcion?.trim() || null,
+                lugar: lugar.trim(),
+                fecha: fechaEvento,
                 categoria: {
                     connect: { id: categoriaId }
                 }
@@ -143,10 +216,21 @@ export const actualizarEvento = async (req, res, next) => {
 
 export const eliminarEvento = async (req, res, next) => {
     try {
-        const idEvento = req.params.id;
+        const idEvento = Number(req.params.id);
+
+        if (!Number.isInteger(idEvento) || idEvento <= 0) {
+            const error = new Error(
+                "El identificador debe ser un entero positivo."
+            );
+
+            error.status = 400;
+            return next(error);
+        }
 
         await prisma.evento.delete({
-            where: { id: idEvento }
+            where: {
+                id: idEvento
+            }
         });
 
         return res.status(204).send();
