@@ -1,4 +1,7 @@
 import prisma from "../config/prisma.js";
+import {
+    crearEvento as crearEventoService
+} from "../services/eventos.service.js";
 
 export const obtenerEventos = async (req, res, next) => {
     try {
@@ -57,66 +60,11 @@ export const obtenerEventoPorId = async (req, res, next) => {
 
 export const crearEvento = async (req, res, next) => {
     try {
-        const {
-            nombre,
-            descripcion,
-            lugar,
-            fecha,
-            categoriaId
-        } = req.body;
+        const crearEventoDto = req.body;
 
-        if (
-            !nombre ||
-            !lugar ||
-            !fecha ||
-            !Number.isInteger(categoriaId) ||
-            categoriaId <= 0
-        ) {
-            const error = new Error(
-                "Nombre, lugar y fecha son obligatorios; " +
-                "categoriaId debe ser un entero positivo."
-            );
-
-            error.status = 400;
-            return next(error);
-        }
-
-        const fechaEvento = new Date(fecha);
-
-        if (Number.isNaN(fechaEvento.getTime())) {
-            const error = new Error(
-                "La fecha del evento no es válida."
-            );
-
-            error.status = 400;
-            return next(error);
-        }
-
-        const categoria = await prisma.categoria.findUnique({
-            where: { id: categoriaId }
-        });
-
-        if (!categoria) {
-            const error = new Error("La categoría indicada no existe.");
-
-            error.status = 400;
-            return next(error);
-        }
-
-        const nuevoEvento = await prisma.evento.create({
-            data: {
-                nombre: nombre.trim(),
-                descripcion: descripcion?.trim() || null,
-                lugar: lugar.trim(),
-                fecha: fechaEvento,
-                categoria: {
-                    connect: { id: categoriaId }
-                }
-            },
-            include: {
-                categoria: true
-            }
-        });
+        const nuevoEvento = await crearEventoService(
+            crearEventoDto
+        );
 
         return res.status(201).json(nuevoEvento);
     } catch (error) {
