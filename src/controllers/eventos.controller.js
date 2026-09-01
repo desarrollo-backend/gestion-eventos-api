@@ -1,27 +1,16 @@
 import prisma from "../config/prisma.js";
 import {
-    crearEvento as crearEventoService
+    crearEvento as crearEventoService,
+    consultarEventos as consultarEventosService
 } from "../services/eventos.service.js";
 
 export const obtenerEventos = async (req, res, next) => {
     try {
-        const eventosPersistidos = await prisma.evento.findMany();
+        const criteriosConsulta = req.consultaEventos;
 
-        return res.json(eventosPersistidos);
-    } catch (error) {
-        return next(error);
-    }
-};
+        const resultado = await consultarEventosService(criteriosConsulta);
 
-export const obtenerEventosFiltrados = async (req, res, next) => {
-    try {
-        const { lugar } = req.query;
-
-        const eventosFiltrados = await prisma.evento.findMany({
-            where: { lugar }
-        });
-
-        return res.json(eventosFiltrados);
+        return res.json(resultado);
     } catch (error) {
         return next(error);
     }
