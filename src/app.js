@@ -1,5 +1,6 @@
 import express from "express"
 import eventosRoutes from "./routes/eventos.routes.js";
+import usuariosRoutes from "./routes/usuarios.routes.js";
 
 const app = express();
 const PORT = 3000;
@@ -21,6 +22,8 @@ app.get('/', (req, res) => {
 });    
 
 app.use("/eventos", eventosRoutes);
+app.use("/usuarios", usuariosRoutes);
+
 
 // Ruta no encontrada
 app.use((req, res, next) => {
