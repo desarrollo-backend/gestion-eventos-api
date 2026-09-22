@@ -29,7 +29,7 @@ export const iniciarSesion = async (
         );
 
         return res.status(200).json({
-            mensaje: "Inicio de sesión correcto.",
+            mensaje: "Credenciales verificadas correctamente.",
             usuario: usuario
         });
     } catch (error) {
