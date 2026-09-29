@@ -70,7 +70,7 @@ model Inscripcion {
 }
 
 model Usuario {
-  id           Int      @id @default(autoincrement())
+  id           String      @id @default(uuid()) @db.Uuid
   nombre       String
   email        String   @unique
   passwordHash String
