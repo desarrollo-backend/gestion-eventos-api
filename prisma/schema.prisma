@@ -77,3 +77,10 @@ model Usuario {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
+
+model TokenRevocado {
+  jti     String   @id
+  venceEn DateTime
+
+  @@index([venceEn])
+}
