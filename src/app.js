@@ -1,6 +1,10 @@
 import express from "express"
 import eventosRoutes from "./routes/eventos.routes.js";
 import usuariosRoutes from "./routes/usuarios.routes.js";
+import "./config/jwt.js";
+import { iniciarLimpiezaRevocaciones }
+  from "./tareas/limpiezaRevocaciones.js";
+
 
 const app = express();
 const PORT = 3000;
@@ -45,6 +49,7 @@ app.use((err, req, res, next) => {
     });
 });
 
-app.listen(PORT, () => { 
-    console.log(`Servidor iniciado en puerto ${PORT}`);
+app.listen(PORT, () => {
+  console.log(`Servidor iniciado en puerto ${PORT}`);
+  iniciarLimpiezaRevocaciones();
 });

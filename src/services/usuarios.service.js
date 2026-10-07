@@ -89,3 +89,14 @@ export const iniciarSesion = async (
         email: usuario.email
     };
 };
+
+export const obtenerUsuarioPorId = async (id) => {
+  return prisma.usuario.findUnique({
+    where: { id: id },
+    select: {
+      id: true,
+      nombre: true,
+      email: true
+    }
+  });
+};
